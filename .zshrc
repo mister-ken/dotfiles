@@ -211,6 +211,7 @@ function tf_log_toggle() {
 
 ## kubernetes aliasses
 alias kb=kubectl
+complete -o default -F __start_kubectl kb
 alias kbgp='kubectl get pods'
 alias kbgns='kubectl get ns'
 alias kbgs='kubectl get service'
@@ -376,10 +377,13 @@ EOPYTHON
 
 scrape  () {
 python << EPYTHON
-#!/usr/bin/env python
+#!/usr/bin/env python3
+# scrapes commands from codeblocks in markdown
+
 import sys 
 
 IN_BLOCK = False
+INLINE_FILE = False
 
 command = None
 
@@ -389,26 +393,25 @@ with open('${1}',"r") as gfg_file:
    for line in file_content:
       line = line.strip()
       if "$ " in line:
-         # print("line ", line)
          command = line[2:]
-         if command[-1:] == '\\\':
+         if command[-1]== "\\\":
             IN_BLOCK = True
+         elif command.split(" ")[-1]=="<<EOF":
+            INLINE_FILE = True
          command = command + "\n"
-      elif IN_BLOCK:
-         # print(command)
-         command = command + line
-         if command[-1:] == '\\\':
+      elif IN_BLOCK or INLINE_FILE:
+         if line.split(" ")[-1] == "\\\":
             IN_BLOCK = True
-            # print("IN_BLOCK ", command)
-            command = command + "\n"
+         elif INLINE_FILE:
+            if line.split(" ")[-1]=="EOF":
+               INLINE_FILE = False
          else:
             IN_BLOCK = False
-            command = command
+            INLINE_FILE = False
+         command = command + "\t" + line + "\n"
       elif command:
          print(command)
-         IN_BLOCK = False
          command = None
-
 EPYTHON
 }
 
@@ -433,7 +436,10 @@ alias newchr='open -na "Google Chrome" --args --incognito "https://s.f/myapps"'
 alias hcchr='open -n -a "Google Chrome" --args --profile-directory="Profile 1"'
 alias kenchr='open -n -a "Google Chrome" --args --profile-directory="Profile 2"'
 
+## instruqt
 alias ins=instruqt
+export INSTRUQT_TELEMETRY=false
+export INSTRUQT_REPORT_CRASHES=false
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/vault vault
 
