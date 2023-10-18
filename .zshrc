@@ -5,6 +5,7 @@ export ZSH="/Users/mrken/.oh-my-zsh"
 ZSH_THEME="agnoster"
 
 source $ZSH/oh-my-zsh.sh
+source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
 export ZSH=$HOME/.oh-my-zsh
 HIST_STAMPS="mm/dd/yyyy"
@@ -108,14 +109,6 @@ setopt HIST_NO_STORE
 ### chpwd (hook function) is called by zsh when directory changed
 chpwd() ls
 
-### Idea use hook functino to save exports to seperate history, 
-### so can easily export in other shells
-
-## trying to get exact old commands to run them again
-## does not work yet
-# history | egrep "5707  export HCP_|CLIENT_ID|CLIENT_SECRET|=" 
-# fc is an alternative
-
 ## aws cli aliases and env variables
 ## awsho updated from https://medium.com/circuitpeople/aws-cli-with-jq-and-bash-9d54e2eabaf1
 alias awsho='{ aws sts get-caller-identity & aws iam list-account-aliases; } | jq -s ".|add"'
@@ -123,7 +116,7 @@ alias awsho='{ aws sts get-caller-identity & aws iam list-account-aliases; } | j
 # for some reason the ' above causing coloring to be off
 # alias clearuser=`aws iam delete-access-key --access-key-id $AWS_ACCESS_KEY_ID --user-name vault-test-user`
 
-## list specifc env variables
+## list specific env variables
 ## should be replaced by vars and get_env_variables below
 alias awsvars='env|grep -i ".*AWS"'
 alias vaultvars='env | grep -i ".*VAULT_"'
@@ -131,7 +124,7 @@ alias tfvars='env | grep TF_'
 alias hcpvars='env | grep -i ".*HCP_"'
 alias govars='env | grep GO'
 
-alias hollywood='docker run --rm -it bcbcarl/hollywood'czsh
+alias hollywood='docker run --rm -it bcbcarl/hollywood'
 
 get_env_variables () {
     typeset -u env_var_identifier
@@ -148,9 +141,12 @@ get_env_variables () {
 ## suffix alias 
 ## get env var vaules already set
 alias -s vars=get_env_variables
-alias varval=get_env_variables
+alias vv=get_env_variables
 ## now can just paste the .git url to clone it
 alias -s git='git clone '
+
+## global alias
+alias -g pjq='| jq'
 
 printstuff () {
     echo $0
@@ -179,6 +175,7 @@ alias pip=pip3
 ### Terraform aliases, variables and functions
 alias tfl='terraform login NEED_HOST'
 alias tf='terraform'
+alias compdef tf=terraform
 alias tfi='terraform init'
 alias tfpo='terraform plan --out tf.plan'
 alias tfp='terraform plan'
@@ -209,9 +206,11 @@ function tf_log_toggle() {
     fi
 }
 
-## kubernetes aliasses
-alias kb=kubectl
-complete -o default -F __start_kubectl kb
+## kubernetes settings and aliasses
+source <(kubectl completion zsh)
+alias compdef kb=kubectl
+# alias kb=kubectl
+# complete -o default -F __start_kubectl kb
 alias kbgp='kubectl get pods'
 alias kbgns='kubectl get ns'
 alias kbgs='kubectl get service'
@@ -440,8 +439,9 @@ alias kenchr='open -n -a "Google Chrome" --args --profile-directory="Profile 2"'
 alias ins=instruqt
 export INSTRUQT_TELEMETRY=false
 export INSTRUQT_REPORT_CRASHES=false
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /opt/homebrew/bin/vault vault
+# replaced by zsh-autocomplete
+# autoload -U +X bashcompinit && bashcompinit
+# complete -o nospace -C /opt/homebrew/bin/vault vault
 
 ## docker
 alias dck=docker
