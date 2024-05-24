@@ -5,7 +5,7 @@ export ZSH="/Users/mrken/.oh-my-zsh"
 ZSH_THEME="agnoster"
 
 source $ZSH/oh-my-zsh.sh
-source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
 export ZSH=$HOME/.oh-my-zsh
 HIST_STAMPS="mm/dd/yyyy"
@@ -217,6 +217,8 @@ alias kbgs='kubectl get service'
 alias kbc=kubectx
 alias kbe=kubens
 alias mk=minikube
+alias mkrs='minikube delete; sleep 3; minikube start ; sleep 5'
+alias kbev='kubectl exec --stdin=true --tty=true vault-0 -- /bin/sh'
 
 ## enable kube_ps1
 # kubeon and kubeoff
@@ -234,7 +236,8 @@ export SKEW_CONFIG=~/.skew/skew.yaml
 
 ### git stuff
 alias gco='git checkout '
-alias gcom='gcp main'
+alias gconb='git checkout -t -b'
+alias gcom='gco main'
 alias gitrepo='cd $HOME/Documents/git_repo/'
 alias ogl='open `gitlab_url`'
 alias ogh='open `github_url`'
@@ -373,7 +376,7 @@ except Exception as e:
 EOPYTHON
 }
 
-
+## scrape commands from markdown
 scrape  () {
 python << EPYTHON
 #!/usr/bin/env python3
