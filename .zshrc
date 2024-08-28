@@ -56,6 +56,8 @@ long_prompt(){
     prompt_end
 }
 
+export SHORT_PROMPT=1
+
 ## toggle verbose and brief prompt
 function prompt() {
     if [ -v SHORT_PROMPT ]
@@ -87,6 +89,7 @@ alias rmgit='trash -rf .git'
 alias rmtf='trash -rf .terraform; trash .terraform.lock.hcl; trash terraform.tfstate; trash tf.plan; trash terraform.tfstate.backup'
 alias ppath='echo $PATH | tr ":" "\n" | sort'
 alias cppwd='pwd | pbcopy'
+alias pspwd='cd $(pbpaste)'
 # Copy output of last command to clipboard
 alias lcc="fc -e -|pbcopy"
 # usage whoport :3000, use pid to kill process
@@ -94,7 +97,8 @@ alias whoport="lsof -P -i "
 findandkill() {  prsn=$(lsof -t -i:$1 );  kill -9 $prsn }
 alias killport=findandkill
 
-export GREP_OPTIONS=' --color=always'
+## below messing with some scripts execution of egrep
+# export GREP_OPTIONS=' --color=always'
 ## any line that starts with a " " is not saved to history
 ## use this to deal with secrets
 ## also ignores duplicates
@@ -214,6 +218,7 @@ alias compdef kb=kubectl
 alias kbgp='kubectl get pods'
 alias kbgns='kubectl get ns'
 alias kbgs='kubectl get service'
+alias kbcn='kubectl config'
 alias kbc=kubectx
 alias kbe=kubens
 alias mk=minikube
@@ -335,6 +340,7 @@ then
 else
 ## Only run neofetch if it is not a terminal in vscode
     [ "$(date +%j)" != "$(cat ~/.nf.prevtime 2>/dev/null)" ] && { neofetch; date +%j > ~/.nf.prevtime} || { true }
+    PROMPT='$(short_prompt) '
 fi
 
 alias nterm='open -a iTerm .'
@@ -393,7 +399,8 @@ with open('${1}',"r") as gfg_file:
    file_content = gfg_file.readlines()
 
    for line in file_content:
-      line = line.strip()
+      line = line.rstrip()
+      indent_count = line.rstrip().count('   ')
       if "$ " in line:
          command = line[2:]
          if command[-1]== "\\\":
@@ -410,7 +417,7 @@ with open('${1}',"r") as gfg_file:
          else:
             IN_BLOCK = False
             INLINE_FILE = False
-         command = command + "\t" + line + "\n"
+         command = command + line + "\n"
       elif command:
          print(command)
          command = None
@@ -450,6 +457,9 @@ export INSTRUQT_REPORT_CRASHES=false
 alias dck=docker
 alias dckps='docker ps -aq'
 alias dckrm='docker rm -f $(docker ps -aq)'
+alias dckva='docker run --name vault --cap-add=IPC_LOCK --env VAULT_DEV_ROOT_TOKEN_ID=root --env VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200 --publish 8200:8200 --detach --rm hashicorp/vault'
+
+
 dckbld () { ## needs image name
     docker build --no-cache -t $1 .
 }
@@ -474,10 +484,12 @@ alias dmtcon='doormat aws console --role arn:aws:iam::166839932314:role/aws_ken.
 ## vault aliasses
 # used for locally compiled vault version
 alias nvlt=/Users/mrken/Documents/dev/github/hashicorp/vault/bin/vault
+alias vaulte=/Users/mrken/Documents/dev/github/hashicorp/vault-enterprise/bin/vault
 alias v=vault
 alias vr='vault read'
 alias vw='vault write'
 alias vl='vault list'
+alias vs='vault status'
 
 ## set terminal tab title
 alias stt=setTerminalText
