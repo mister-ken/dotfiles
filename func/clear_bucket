@@ -1,0 +1,21 @@
+#!/usr/bin/python3
+
+## use this to completly clear a bucket you want to use terraform destroy on
+function clear_bucket () {
+python <<- EOPYTHON
+#!/usr/bin/env python
+import boto3
+import sys
+## delete markers on an object are making it hard to terraform destroy
+## this clears out bucket for a terraform destroy
+try:
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket('${1}')
+    bucket.object_versions.all().delete()
+    print('${1}', "is now empty!")
+    # bucket.delete()
+except Exception as e:
+    print("that ain't workin':", e)
+    exit(1)
+EOPYTHON
+}

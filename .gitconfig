@@ -1,0 +1,11 @@
+[user]
+	email = ken.keller@hashicorp.com
+	name = Ken Keller
+[url "https://github.com/hashicorp"]
+	insteadOf = git@github.com:hashicorp
+[credential]
+	helper = osxkeychain
+[core]
+	excludesfile = /Users/mrken/.gitignore_global
+[color]
+	status = always

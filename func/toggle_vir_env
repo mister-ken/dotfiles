@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function toggle_vir_env () {
+    if [ -v VIRTUAL_ENV ]
+    then
+        deactivate
+        echo "virtual env decactived"
+    else
+        python -m venv ./env; 
+        source ./env/bin/activate
+    fi
+}

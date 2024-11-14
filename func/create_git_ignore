@@ -1,0 +1,36 @@
+#!/bin/bash
+
+### creates a .gtignore
+function create_git_ignore() {
+cat > .gitignore << EOF
+*.exe
+*.exe~
+pc
+**/pc
+*tfstate*
+*.zip
+*.tar.gz
+*.rar
+*.plan
+public/**
+themes/**
+**.DS_Store
+**.git
+logs/**
+junk/**
+.terraform/**
+**/.terraform/**
+.terraform.lock.hcl
+.vscode
+.vale.ini
+.styles/**
+.vscode/**
+**settings.json*
+python/public
+env/
+out/
+~$*
+nohup.out
+env/
+EOF
+}

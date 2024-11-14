@@ -1,0 +1,18 @@
+Copy to paste buffer                    pbcopy
+Paste from buffer                       pbpaste
+Tar examples:
+  Gzip (standard, fastest)              tar -czvf archive.tar.gz stuff
+  extract files                         tar -xvf archive.tar.<ext>
+  zip                                   zip [-b path] archive.zip stuff
+  unzip
+cat text file to clipboard              cat text.txt | pbcopy
+Clear iterm2 buffer                     cmd + k
+Mac -> Windows keyboard map
+  Command (or Cmd) ⌘                    ⊞ Windows key
+  Option (or Alt) ⌥                     Alt
+Undo one commit                         git reset --soft HEAD~1
+HEREDOC syntax                          cat file.txt<< EOF  > file.txt
+                                        cool cat
+                                        EOF
+Alternate directory cmds                pushd, popd, dirs                                        
+Edit this file at                       /Users/mrken/Documents/dev/github/mister-ken/dotfiles/.iforgot

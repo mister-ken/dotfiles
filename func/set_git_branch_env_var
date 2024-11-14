@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# sets GIT_BRANCH in a git repo
+
+function set_git_branch_env_var() {
+    if [ $(git status &>/dev/null; echo $?) -eq 0 ]; then 
+        export GIT_BRANCH=$(git branch --show-current)
+        print "GIT_BRANCH is set to $GIT_BRANCH"
+    else
+        unset GIT_BRANCH
+    fi
+}
