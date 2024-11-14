@@ -1,0 +1,10 @@
+#!/bin/bash
+
+## opens arc browser using applescript
+
+open_arc() {
+osascript -e "tell application \"Arc\"
+    make new tab with properties {URL:\"$1\"}
+    activate
+end tell"
+}

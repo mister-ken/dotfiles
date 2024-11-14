@@ -1,0 +1,23 @@
+#!/bin/bash
+
+###
+# takes file location, opens in VScode and opens URL
+# $1 local file location
+# Optional
+# $2 domain to open webpage ie https://localhost:3000/
+# if #2 is empty open at hc developer
+
+view_edit_tutorial() {
+    if [ -z "${2:=https://developer.hashicorp.com/}" ]; then :
+    else domain="$2" 
+    fi
+    if [ ! -f "$1" ]; then echo "${1} not found!"
+    else
+        collection=$(awk -F "[:/]" '$1=="default_collection_context" {print $3}' "$1") # searches the file
+        file_name=$(echo "$1" | awk -F "[/.]" '{print $(NF-1)}') # this extracts from file name - should be grep
+        # echo "${domain}/vault/tutorials/${collection}/${file_name}"
+        open "${domain}/vault/tutorials/${collection}/${file_name}"
+        sleep 1
+        code "$1"
+    fi
+}

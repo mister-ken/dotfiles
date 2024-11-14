@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Set up the prompt (with git branch name)
+# copied from ~/.oh-my-zsh/themes/agnoster.zsh-theme
+## set up short prompt_dir based on prompt_dir from agnoster.zsh-theme
+short_prompt_dir() {
+    prompt_segment blue $CURRENT_FG "%$1~"
+}
+
+# originally Context: user@hostname (who am I and where am I)
+# hashi looked like mrken@mrken-XXXXX so over ridden
+prompt_context() {
+  if [[ "$USERNAME" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+    prompt_segment black default "%(!.%{%F{yellow}%}.)%m"
+  fi
+}
+
+short_prompt() {
+    RETVAL=$?
+    prompt_status
+    # prompt_virtualenv
+    prompt_aws
+    # prompt_context
+    short_prompt_dir 1
+    prompt_git
+    prompt_bzr
+    prompt_hg
+    prompt_end
+}
+
+long_prompt(){
+    RETVAL=$?
+    prompt_status
+    prompt_virtualenv
+    prompt_aws
+    prompt_context
+    prompt_dir
+    prompt_git
+    prompt_bzr
+    prompt_hg
+    prompt_end
+}
+
+export SHORT_PROMPT=1
+
+## toggle verbose and brief prompt
+function prompt() {
+    if [ -v SHORT_PROMPT ]
+    then # verbose is default
+        unset SHORT_PROMPT
+        export PROMPT='$(long_prompt)'
+    else # short prompt
+        export PROMPT='$(short_prompt)'
+        export SHORT_PROMPT=1
+fi
+}
+
+
+# slightly different prompt configurations if in VScode or iterm2
+if [ "$TERM_PROGRAM" = "vscode" ]; then
+    PROMPT='$(short_prompt) '
+else ## Only run neofetch if it is not a terminal in vscode
+    [ "$(date +%j)" != "$(cat ~/.nf.prevtime 2>/dev/null)" ] && { neofetch; date +%j > ~/.nf.prevtime ;} ||  true 
+    PROMPT='$(short_prompt) '
+fi
+
+# setopt PROMPT_SUBST
+# PROMPT='$(build_prompt) '
+## Display time at far right of prompt line
+# RPROMPT='%*'
+## brief standard prompt
+# PROMPT='%(?.%F{green}√.%F{red}?%?)%f %B%F{240}%1~%f%b %# '

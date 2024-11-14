@@ -1,0 +1,15 @@
+#!/bin/bash
+
+## easy way to create exports where all env variables have the same string
+## in the name - AWS_, VAULT_, etc.
+## 'create_exports_by_string vault' will put your env values into paste buffer as expo
+function create_exports_by_string () { 
+    export_string=""
+    raw_string=$(get_env_variables $@)
+    array=( $(echo $raw_string | tr '\n' ' ') )
+    for n in ${array[@]}
+    do
+        export_string="export $n; $export_string"
+    done
+    echo $export_string | pbcopy
+}
