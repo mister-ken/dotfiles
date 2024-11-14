@@ -70,13 +70,13 @@ preexec () {
 }
 
 ### function aliases
-alias vir-env=toggle_vir_env
+alias vir-env='toggle_vir_env'
 ### use fuzzy finder to search alises
 alias fzfa='search_alias'
-alias kickbucket=clear_bucket
-alias exvar=create_exports_by_string
-alias oa=open_arc
-alias vedit=view_edit_tutorial
+alias kickbucket='clear_bucket'
+alias exvar='create_exports_by_string'
+alias oa='open_arc'
+alias vedit='view_edit_tutorial'
 
 ## aws cli aliases and env variables
 ## awsho updated from https://medium.com/circuitpeople/aws-cli-with-jq-and-bash-9d54e2eabaf1
