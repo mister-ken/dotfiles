@@ -41,8 +41,6 @@ long_prompt(){
     prompt_end
 }
 
-export SHORT_PROMPT=1
-
 ## toggle verbose and brief prompt
 function prompt() {
     if [ -v SHORT_PROMPT ]
@@ -55,18 +53,10 @@ function prompt() {
 fi
 }
 
-
 # slightly different prompt configurations if in VScode or iterm2
 if [ "$TERM_PROGRAM" = "vscode" ]; then
-    PROMPT='$(short_prompt) '
+    PROMPT=$(short_prompt)
 else ## Only run neofetch if it is not a terminal in vscode
     [ "$(date +%j)" != "$(cat ~/.nf.prevtime 2>/dev/null)" ] && { neofetch; date +%j > ~/.nf.prevtime ;} ||  true 
-    PROMPT='$(short_prompt) '
+    PROMPT=$(short_prompt) 
 fi
-
-# setopt PROMPT_SUBST
-# PROMPT='$(build_prompt) '
-## Display time at far right of prompt line
-# RPROMPT='%*'
-## brief standard prompt
-# PROMPT='%(?.%F{green}√.%F{red}?%?)%f %B%F{240}%1~%f%b %# '

@@ -2,13 +2,6 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 # Path to your oh-my-zsh installation.
 
-function source_if_exists ()
-{
-    [ -f "$1" ] && source "$1"
-}
-
-plugins=(git fzf terraform)
-
 ## CDPATH set here lets me go directly to directories under dev from anywhere
 export CDPATH=.:$HOME/Documents/dev
 
@@ -19,27 +12,14 @@ export DEFAULT_USER=`whoami`
 export LOCAL_GITHUB=$HOME/Documents/dev/github
 export DOTFILES=$LOCAL_GITHUB/mister-ken/dotfiles
 
-## cusomise agonister prompt
-source_if_exists $DOTFILES/custom_prompt.sh
-source_if_exists $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source_if_exists $ZSH/oh-my-zsh.sh
-source_if_exists ~/.fzf.zsh
+function source_if_exists (){[ -f "$1" ] && source "$1"}
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-alias ls='ls -laG'
-alias rm='echo "please use trash instead to delete"'
-alias ppath='echo $PATH | tr ":" "\n" | sort'
-alias iforgot='cat $DOTFILES/.iforgot'
-alias cppwd='pwd | pbcopy'
-alias pspwd='cd $(pbpaste)'
-# Copy output of last command to clipboard
-alias lcc="fc -e -|pbcopy"
-# usage whoport :3000, use pid to kill process
-alias whoport="lsof -P -i "
-alias killport=find_and_kill
+plugins=(git fzf terraform)
+
+source_if_exists $ZSH/oh-my-zsh.sh
+source_if_exists $DOTFILES/.custom_prompt ## cusomise agonister prompt
+source_if_exists $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source_if_exists ~/.fzf.zsh
 
 ## any line that starts with a " " is not saved to history
 ## use this to deal with secrets
@@ -66,17 +46,38 @@ set_git_branch_env_var
 
 # set env var when git called
 preexec () { 
+    ## unfortnately this does not change $GIT_BRANCH when switching branch with 'git branch...'.
+
     if [[ "${1}" =~ ^["git"] ]]; then set_git_branch_env_var; fi
 }
 
+export SHORT_PROMPT=1
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+
+alias ls='ls -laG'
+alias rm='echo "please use trash instead to delete"'
+alias ppath='echo $PATH | tr ":" "\n" | sort'
+alias iforgot='cat $DOTFILES/.iforgot'
+alias cppwd='pwd | pbcopy'
+alias pspwd='cd $(pbpaste)'
+# Copy output of last command to clipboard
+alias lcc="fc -e -|pbcopy"
+# usage whoport :3000, use pid to kill process
+alias whoport="lsof -P -i "
+alias killport=find_and_kill
+
 ### function aliases
-alias vir-env=toggle_vir_env
+alias vir-env='toggle_vir_env'
 ### use fuzzy finder to search alises
 alias fzfa='search_alias'
-alias kickbucket=clear_bucket
-alias exvar=create_exports_by_string
-alias oa=open_arc
-alias vedit=view_edit_tutorial
+alias kickbucket='clear_bucket'
+alias exvar='create_exports_by_string'
+alias oa='open_arc'
+alias vedit='view_edit_tutorial'
 
 ## aws cli aliases and env variables
 ## awsho updated from https://medium.com/circuitpeople/aws-cli-with-jq-and-bash-9d54e2eabaf1
