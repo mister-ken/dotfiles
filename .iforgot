@@ -14,5 +14,6 @@ Undo one commit                         git reset --soft HEAD~1
 HEREDOC syntax                          cat file.txt<< EOF  > file.txt
                                         cool cat
                                         EOF
-Alternate directory cmds                pushd, popd, dirs                                        
+Alternate directory cmds                pushd, popd, dirs
+Check function definition cmd line      decare -f function_name
 Edit this file at                       /Users/mrken/Documents/dev/github/mister-ken/dotfiles/.iforgot
