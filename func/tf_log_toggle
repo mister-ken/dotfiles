@@ -2,12 +2,12 @@
 
 ### quickly toogle terraform logging (TF_LOG) on and off
 function tf_log_toggle() {
-    if [ -v TF_LOG ]
+    if [ -v "$TF_LOG" ]
     then
         unset TF_LOG
         echo "unset TF_LOG"
     else
-        export TF_LOG=TRACE
+        export TF_LOG="TRACE"
         echo "TF_LOG=$TF_LOG"
     fi
 }

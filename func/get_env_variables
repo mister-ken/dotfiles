@@ -1,9 +1,9 @@
 #!/bin/bash
 
 function get_env_variables () {
-    env_var_identifier=$(echo $1 | cut -d "." -f 1)
+    env_var_identifier=$(echo "$1" | cut -d "." -f 1)
     # echo $env_var_identifier
-    if [ -z $env_var_identifier ]
+    if [ -z "$env_var_identifier" ]
     then # show values for GO, AWS, VAULT, Terraform and HCP
         env | grep -E "GO|.*AWS|.*VAULT_|TF_|.*HCP_" | sort
     else

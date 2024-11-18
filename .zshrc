@@ -12,6 +12,8 @@ export DEFAULT_USER=`whoami`
 export LOCAL_GITHUB=$HOME/Documents/dev/github
 export DOTFILES=$LOCAL_GITHUB/mister-ken/dotfiles
 
+PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash"
+
 function source_if_exists (){[ -f "$1" ] && source "$1"}
 
 plugins=(git fzf terraform)
@@ -70,6 +72,10 @@ alias lcc="fc -e -|pbcopy"
 alias whoport="lsof -P -i "
 alias killport=find_and_kill
 
+### PYTHON
+alias python=python3
+alias pip=pip3
+
 ### function aliases
 alias vir-env='toggle_vir_env'
 ### use fuzzy finder to search alises
@@ -110,14 +116,6 @@ alias czsh='code ~/.zshrc'
 export GOPATH=$HOME/go
 export GOBIN=$HOME/go/bin
 # export GOROOT=/usr/local/go ## let go deal with it
-
-### add GOPATH to path
-# REMOVED BELOW B/C WAS GOING TO DEV VERSION OF VAULT
-#PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:$GOBIN"
-PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash"
-### PYTHON
-alias python=python3
-alias pip=pip3
 
 ### Terraform aliases, variables and functions
 alias compdef tf=terraform
