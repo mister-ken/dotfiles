@@ -4,7 +4,7 @@
 # copied from ~/.oh-my-zsh/themes/agnoster.zsh-theme
 ## set up short prompt_dir based on prompt_dir from agnoster.zsh-theme
 short_prompt_dir() {
-    prompt_segment blue $CURRENT_FG "%$1~"
+    prompt_segment blue "$CURRENT_FG" "%$1~"
 }
 
 # originally Context: user@hostname (who am I and where am I)
