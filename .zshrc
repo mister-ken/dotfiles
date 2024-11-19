@@ -6,22 +6,25 @@
 export CDPATH=.:$HOME/Documents/dev
 
 export ZSH="/Users/mrken/.oh-my-zsh"
-ZSH_THEME="agnoster"
+ZSH_THEME="custom-agnoster" # mu customized agnoster prompt
 export ZSH=$HOME/.oh-my-zsh
 export DEFAULT_USER=`whoami`
 export LOCAL_GITHUB=$HOME/Documents/dev/github
 export DOTFILES=$LOCAL_GITHUB/mister-ken/dotfiles
 
 PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash"
+# export SHORT_PROMPT=1
 
 function source_if_exists (){[ -f "$1" ] && source "$1"}
 
 plugins=(git fzf terraform)
 
 source_if_exists $ZSH/oh-my-zsh.sh
-source_if_exists $DOTFILES/.custom_prompt ## cusomise agonister prompt
+source_if_exists $DOTFILES/.custom_prompt
 source_if_exists $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source_if_exists ~/.fzf.zsh
+
+
 
 ## any line that starts with a " " is not saved to history
 ## use this to deal with secrets
@@ -52,8 +55,6 @@ preexec () {
 
     if [[ "${1}" =~ ^["git"] ]]; then set_git_branch_env_var; fi
 }
-
-export SHORT_PROMPT=1
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -109,7 +110,8 @@ alias -g PJQ='| jq'
 alias -g OURL='-output-curl-string'
 
 # edit and source this file
-alias szsh='source $HOME/.zshrc'
+alias szsh='echo "use ezsh instead"' 
+alias ezsh='exec zsh' # restarts the shell
 alias czsh='code ~/.zshrc'
 
 ### GOPATHs
