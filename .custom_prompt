@@ -1,39 +1,39 @@
-#!/bin/bash
+# #!/bin/bash
 
-short_prompt() {
-    RETVAL=$?
-    prompt_status
-    # prompt_virtualenv
-    prompt_aws
-    # prompt_context
-    prompt_dir 1
-    prompt_git
-    prompt_bzr
-    prompt_hg
-    prompt_end
-}
+# short_prompt() {
+#     RETVAL=$?
+#     prompt_status
+#     # prompt_virtualenv
+#     prompt_aws
+#     # prompt_context
+#     prompt_dir 1
+#     prompt_git
+#     prompt_bzr
+#     prompt_hg
+#     prompt_end
+# }
 
-long_prompt(){
-    RETVAL=$?
-    prompt_status
-    prompt_virtualenv
-    prompt_aws
-    prompt_context
-    prompt_dir
-    prompt_git
-    prompt_bzr
-    prompt_hg
-    prompt_end
-}
+# long_prompt(){
+#     RETVAL=$?
+#     prompt_status
+#     prompt_virtualenv
+#     prompt_aws
+#     prompt_context
+#     prompt_dir
+#     prompt_git
+#     prompt_bzr
+#     prompt_hg
+#     prompt_end
+# }
 
-## toggle verbose and brief prompt
-function prompt() {
-    if [ -v SHORT_PROMPT ]
-    then # verbose is default
-        unset SHORT_PROMPT
-        PROMPT=$(long_prompt)
-    else # short prompt
-        PROMPT=$(short_prompt)
-        export SHORT_PROMPT=1
-    fi
-}
+# ## toggle verbose and brief prompt
+# function prompt() {
+#     if [ -v SHORT_PROMPT ]
+#     then # verbose is default
+#         unset SHORT_PROMPT
+#         PROMPT=$(long_prompt)
+#     else # short prompt
+#         PROMPT=$(short_prompt)
+#         export SHORT_PROMPT=1
+#     fi
+# }
