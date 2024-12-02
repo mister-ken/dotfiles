@@ -37,10 +37,3 @@ function prompt() {
         export SHORT_PROMPT=1
     fi
 }
-# slightly different prompt configurations if in VScode or iterm2
-if [ "$TERM_PROGRAM" = "vscode" ]; then
-    PROMPT=$(short_prompt)
-else ## Only run neofetch if it is not a terminal in vscode
-    [ "$(date +%j)" != "$(cat ~/.nf.prevtime 2>/dev/null)" ] && { neofetch; date +%j > ~/.nf.prevtime ;} ||  true 
-    PROMPT=$(short_prompt) # origibally long prompt
-fi

@@ -5,9 +5,8 @@
 ## CDPATH set here lets me go directly to directories under dev from anywhere
 export CDPATH=.:$HOME/Documents/dev
 
-export ZSH="/Users/mrken/.oh-my-zsh"
-ZSH_THEME="custom-agnoster" # mu customized agnoster prompt
 export ZSH=$HOME/.oh-my-zsh
+ZSH_THEME="custom-agnoster" # my customized agnoster prompt
 export DEFAULT_USER=`whoami`
 export LOCAL_GITHUB=$HOME/Documents/dev/github
 export DOTFILES=$LOCAL_GITHUB/mister-ken/dotfiles
@@ -24,8 +23,6 @@ source_if_exists $DOTFILES/.custom_prompt
 source_if_exists $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source_if_exists ~/.fzf.zsh
 
-
-
 ## any line that starts with a " " is not saved to history
 ## use this to deal with secrets
 ## also ignores duplicates
@@ -36,8 +33,16 @@ export SAVEHIST=10000
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_NO_STORE
 
+# slightly different prompt configurations if in VScode or iterm2
+if [ "$TERM_PROGRAM" = "vscode" ]; then
+    PROMPT=$(short_prompt)
+else ## Only run neofetch if it is not a terminal in vscode
+    [ "$(date +%j)" != "$(cat ~/.nf.prevtime 2>/dev/null)" ] && { neofetch; date +%j > ~/.nf.prevtime ;} ||  true 
+    PROMPT=$(short_prompt) # origibally long prompt
+fi
+
 ## array with paths to functions
-## also sets FPATH 
+## also sets FPATH env var
 fpath=( $DOTFILES/func "${fpath[@]}" )
 # autoload those functions
 autoload -Uz $fpath[1]/*(.:t)
@@ -47,14 +52,13 @@ autoload -Uz $fpath[1]/*(.:t)
 chpwd() {emulate -L zsh; ls -la; set_git_branch_env_var}
 
 # run during shell start up
-set_git_branch_env_var
+# set_git_branch_env_var
 
 # set env var when git called
-preexec () { 
-    ## unfortnately this does not change $GIT_BRANCH when switching branch with 'git branch...'.
-
-    if [[ "${1}" =~ ^["git"] ]]; then set_git_branch_env_var; fi
-}
+# preexec () { 
+#     ## unfortnately this does not change $GIT_BRANCH when switching branch with 'git branch...'.
+#     if [[ "${1}" =~ ^["git"] ]]; then set_git_branch_env_var; fi
+# }
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
