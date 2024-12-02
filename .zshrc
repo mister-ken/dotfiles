@@ -12,14 +12,13 @@ export LOCAL_GITHUB=$HOME/Documents/dev/github
 export DOTFILES=$LOCAL_GITHUB/mister-ken/dotfiles
 
 PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash"
-# export SHORT_PROMPT=1
 
 function source_if_exists (){[ -f "$1" ] && source "$1"}
 
 plugins=(git fzf terraform)
 
 source_if_exists $ZSH/oh-my-zsh.sh
-source_if_exists $DOTFILES/.custom_prompt
+# source_if_exists $DOTFILES/.custom_prompt
 source_if_exists $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source_if_exists ~/.fzf.zsh
 
@@ -34,12 +33,12 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_NO_STORE
 
 # slightly different prompt configurations if in VScode or iterm2
-if [ "$TERM_PROGRAM" = "vscode" ]; then
-    PROMPT=$(short_prompt)
+if [ "$TERM_PROGRAM" = "vscode" ]; then :
 else ## Only run neofetch if it is not a terminal in vscode
+    # check if exists, then create if not
     [ "$(date +%j)" != "$(cat ~/.nf.prevtime 2>/dev/null)" ] && { neofetch; date +%j > ~/.nf.prevtime ;} ||  true 
-    PROMPT=$(short_prompt) # origibally long prompt
 fi
+
 
 ## array with paths to functions
 ## also sets FPATH env var

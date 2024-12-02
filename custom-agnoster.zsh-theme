@@ -210,12 +210,12 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  if [ -v "$1" ] 
-  then # only display current directory
+  # if [ -v "$1" ] 
+  # then # only display current directory
     prompt_segment blue $CURRENT_FG '%1~'
-  else # display whole current path
-    prompt_segment blue $CURRENT_FG '%~'
-  fi
+  # else # display whole current path
+  #   prompt_segment blue $CURRENT_FG '%~'
+  # fi
   
 }
 
