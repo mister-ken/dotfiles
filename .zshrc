@@ -68,6 +68,7 @@ alias ls='ls -laG'
 alias rm='echo "please use trash instead to delete"'
 alias ppath='echo $PATH | tr ":" "\n" | sort'
 alias iforgot='cat $DOTFILES/.iforgot'
+alias daily-status-template=`cat $DOTFILES/daily_status.txt | pbcopy`
 alias cppwd='pwd | pbcopy'
 alias pspwd='cd $(pbpaste)'
 # Copy output of last command to clipboard
