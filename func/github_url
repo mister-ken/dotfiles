@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function github_url() {
-    branch=$(git branch --show-current)
-    # url=`git remote get-url origin | sed 's/git@//g; s/.git$//g; s#^#https://#'`
-        url=$(git remote get-url origin | sed 's/git@//g; s/.git$//g')
-    echo "$url/tree/$branch"
+   branch=$(git branch --show-current)
+   # url=`git remote get-url origin | sed 's/git@//g; s/.git$//g; s#^#https://#'`
+   url=$(git remote get-url origin | sed 's/git@//g; s/.git$//g')
+   echo "$url/tree/$branch"
 }

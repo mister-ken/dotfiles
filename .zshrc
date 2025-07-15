@@ -8,6 +8,7 @@ export CDPATH=.:$HOME/Documents/dev
 export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="custom-agnoster" # my customized agnoster prompt
 export DEFAULT_USER=`whoami`
+export DEFAULT_ARCH=$(arch)
 export LOCAL_GITHUB=$HOME/Documents/dev/github
 export DOTFILES=$LOCAL_GITHUB/mister-ken/dotfiles
 
@@ -68,7 +69,7 @@ alias ls='ls -laG'
 alias rm='echo "please use trash instead to delete"'
 alias ppath='echo $PATH | tr ":" "\n" | sort'
 alias iforgot='cat $DOTFILES/.iforgot'
-alias daily-status-template=`cat $DOTFILES/daily_status.txt | pbcopy`
+alias daily-status-template='cat $DOTFILES/daily_status.txt | pbcopy'
 alias cppwd='pwd | pbcopy'
 alias pspwd='cd $(pbpaste)'
 # Copy output of last command to clipboard
@@ -264,6 +265,12 @@ alias vr='vault read'
 alias vw='vault write'
 alias vl='vault list'
 alias vs='vault status'
+alias vdev='vault server -dev -dev-root-token-id root'
+alias vedev='vaulte server -dev -dev-root-token-id root'
+
+# creates alias for running justfile commands in the working directory
+alias .j='just --justfile ./Justfile --working-directory .'
 
 ## for fun
 alias hollywood='docker run --rm -it bcbcarl/hollywood'
+

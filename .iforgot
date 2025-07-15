@@ -1,12 +1,11 @@
-Copy to paste buffer                    pbcopy
-Paste from buffer                       pbpaste
+Copy/paste to paste buffer                    pbcopy, pbpaste
 Tar examples:
   Gzip (standard, fastest)              tar -czvf archive.tar.gz stuff
   extract files                         tar -xvf archive.tar.<ext>
   zip                                   zip [-b path] archive.zip stuff
   unzip
-cat text file to clipboard              cat text.txt | pbcopy
 Clear iterm2 buffer                     cmd + k
+Kill frozen window                      cmd + opt + esc
 Mac -> Windows keyboard map
   Command (or Cmd) ⌘                    ⊞ Windows key
   Option (or Alt) ⌥                     Alt
@@ -16,4 +15,6 @@ HEREDOC syntax                          cat << EOF  > file.txt
                                         EOF
 Alternate directory cmds                pushd, popd, dirs
 Check function definition cmd line      decare -f function_name
+Check desktop architecture              uname -m
+Check OS info                           cat /etc/os-release 
 Edit this file at                       /Users/mrken/Documents/dev/github/mister-ken/dotfiles/.iforgot
