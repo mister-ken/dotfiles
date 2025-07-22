@@ -16,7 +16,7 @@ PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash"
 
 function source_if_exists (){[ -f "$1" ] && source "$1"}
 
-plugins=(git fzf terraform)
+plugins=(git fzf terraform alias-tips)
 
 source_if_exists $ZSH/oh-my-zsh.sh
 # source_if_exists $DOTFILES/.custom_prompt
@@ -118,6 +118,9 @@ alias -g OURL='-output-curl-string'
 alias szsh='echo "use ezsh instead"' 
 alias ezsh='exec zsh' # restarts the shell
 alias czsh='code ~/.zshrc'
+
+### alias tips plugin
+export ZSH_PLUGINS_ALIAS_TIPS_TEXT="Also try: "
 
 ### GOPATHs
 export GOPATH=$HOME/go
