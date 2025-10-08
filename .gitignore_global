@@ -35,3 +35,4 @@ out/
 ~$*
 nohup.out
 env/
+vault.log
