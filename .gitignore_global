@@ -13,9 +13,17 @@ themes/**
 **.git
 logs/**
 junk/**
+
+## terraform files
+*.tfstate
+*.tfstate.*
 .terraform/**
 **/.terraform/**
-.terraform.lock.hcl
+.terraform.tfstate.lock.info
+tf.plan
+crash.log
+crash.*.log
+
 .vscode
 .vale.ini
 .styles/**
@@ -26,4 +34,5 @@ env/
 out/
 ~$*
 nohup.out
+env/
 vault.log

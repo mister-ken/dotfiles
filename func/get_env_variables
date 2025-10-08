@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# TODO: add a way to include shell variables, use typeset
 function get_env_variables () {
     env_var_identifier=$(echo "$1" | cut -d "." -f 1)
     # echo $env_var_identifier
