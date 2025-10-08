@@ -1,17 +1,20 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# ~/.zshrc: executed by zsh for interactive shells.
+# See /usr/share/doc/zsh/examples/zshrc for examples
 # Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
 
 ## CDPATH set here lets me go directly to directories under dev from anywhere
 export CDPATH=.:$HOME/Documents/dev
 
-export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="custom-agnoster" # my customized agnoster prompt
 export DEFAULT_USER=`whoami`
 export DEFAULT_ARCH=$(arch)
 export LOCAL_GITHUB=$HOME/Documents/dev/github
 export DOTFILES=$LOCAL_GITHUB/mister-ken/dotfiles
 
+## discard duplicates in PATH
+typeset -U PATH path
+## see path_helper in /etc/zprofile for how MacOSX sets PATH
 PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash"
 
 function source_if_exists (){[ -f "$1" ] && source "$1"}
@@ -117,7 +120,7 @@ alias -g OURL='-output-curl-string'
 # edit and source this file
 alias szsh='echo "use ezsh instead"' 
 alias ezsh='exec zsh' # restarts the shell
-alias czsh='code ~/.zshrc'
+alias czsh='code $DOTFILES'
 
 ### alias tips plugin
 export ZSH_PLUGINS_ALIAS_TIPS_TEXT="Also try: "
@@ -129,7 +132,7 @@ export GOBIN=$HOME/go/bin
 
 ### Terraform aliases, variables and functions
 alias compdef tf=terraform
-alias tfl='terraform login NEED_HOST'
+alias tfl='terraform login ' ## need to specify host
 alias tf='terraform'
 alias tfi='terraform init'
 alias tfpo='terraform plan --out tf.plan'
@@ -150,7 +153,6 @@ export TF_CLI_CONFIG_FILE=~/.terraformrc
 
 ## kubernetes settings and aliasses
 source <(kubectl completion zsh)
-alias compdef kb=kubectl
 alias kb=kubectl
 alias kbgp='kubectl get pods'
 alias kbgns='kubectl get ns'
@@ -176,12 +178,12 @@ alias gco='git checkout '
 alias gconb='git checkout -t -b'
 alias gcom='gco main'
 alias gun='git reset --soft HEAD~1'
-alias ogl='open `gitlab_url`'
+alias glb='git for-each-ref --format='%(refname:short)' refs/heads/'
 alias ogh='open `github_url`'
 ## reset current commit before push
 alias gunc='git reset HEAD~'
+## prepend env variables to git command for debugging
 alias gitt='env GIT_TRACE=1 GIT_CURL_VERBOSE=1 git'
-alias gitpo='git pull origin'
 
 ## instruqt bootstrap
 alias inqtboot=../../../scripts/build-script/bootstrap.sh
@@ -208,7 +210,7 @@ export FZF_DEFAULT_OPTS=' --margin=2,0% --border --info=inline --prompt="Search:
 alias nterm='open -a iTerm .'
 alias update='brew update && brew outdated'
 
-## open new chrome browser with incognoto
+## open new chrome browser with incognito
 alias newchr='open -na "Google Chrome" --args --incognito "https://s.f/myapps"'
 alias hcchr='open -n -a "Google Chrome" --args --profile-directory="Profile 1"'
 alias kenchr='open -n -a "Google Chrome" --args --profile-directory="Profile 2"'
@@ -259,7 +261,7 @@ alias dmt=doormat
 alias dmtopen='doormat login; eval $(doormat aws export --role arn:aws:iam::166839932314:role/aws_ken.keller_test-developer)'
 alias dmtcon='doormat aws console --role arn:aws:iam::166839932314:role/aws_ken.keller_test-developer --region $AWS_REGION'
 
-## vault aliasses
+## vault aliases
 # used for locally compiled vault version
 alias nvlt=/Users/mrken/Documents/dev/github/hashicorp/vault/bin/vault
 alias vaulte=/Users/mrken/Documents/dev/github/hashicorp/vault-enterprise/bin/vault
