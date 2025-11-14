@@ -9,13 +9,13 @@ export CDPATH=.:$HOME/Documents/dev
 ZSH_THEME="custom-agnoster" # my customized agnoster prompt
 export DEFAULT_USER=`whoami`
 export DEFAULT_ARCH=$(arch)
-export LOCAL_GITHUB=$HOME/Documents/dev/github
-export DOTFILES=$LOCAL_GITHUB/mister-ken/dotfiles
+export GITHUB=$HOME/Documents/dev/github
+export DOTFILES=$GITHUB/mister-ken/dotfiles
 
 ## discard duplicates in PATH
 typeset -U PATH path
 ## see path_helper in /etc/zprofile for how MacOSX sets PATH
-PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash"
+PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash:/opt/homebrew/share/google-cloud-sdk/bin"
 
 function source_if_exists (){[ -f "$1" ] && source "$1"}
 
@@ -36,13 +36,13 @@ export SAVEHIST=10000
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_NO_STORE
 
-# slightly different prompt configurations if in VScode or iterm2
+### Only print neofetch once
+#### the || true makes sure shell does not open with an error
 if [ "$TERM_PROGRAM" = "vscode" ]; then :
-else ## Only run neofetch if it is not a terminal in vscode
+else ## Only run neofetch if terminal is not in VSCode
     # check if exists, then create if not
     [ "$(date +%j)" != "$(cat ~/.nf.prevtime 2>/dev/null)" ] && { neofetch; date +%j > ~/.nf.prevtime ;} ||  true 
 fi
-
 
 ## array with paths to functions
 ## also sets FPATH env var
@@ -54,21 +54,14 @@ autoload -Uz $fpath[1]/*(.:t)
 # emulate help prevent problems with dirs named 'rm'
 chpwd() {emulate -L zsh; ls -la; set_git_branch_env_var}
 
-# run during shell start up
-# set_git_branch_env_var
-
-# set env var when git called
-# preexec () { 
-#     ## unfortnately this does not change $GIT_BRANCH when switching branch with 'git branch...'.
-#     if [[ "${1}" =~ ^["git"] ]]; then set_git_branch_env_var; fi
-# }
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
+# utility aliases
 alias ls='ls -laG'
+alias cdp='$(sed "s/[ls ]*/cd /" <<<$history[$((HISTCMD-1))])'
 alias rm='echo "please use trash instead to delete"'
 alias ppath='echo $PATH | tr ":" "\n" | sort'
 alias iforgot='cat $DOTFILES/.iforgot'
@@ -80,6 +73,8 @@ alias lcc="fc -e -|pbcopy"
 # usage whoport :3000, use pid to kill process
 alias whoport="lsof -P -i "
 alias killport=find_and_kill
+alias nterm='open -a iTerm .'
+alias update='brew update && brew outdated'
 
 ### PYTHON
 alias python=python3
@@ -108,7 +103,7 @@ alias tfvars='env | grep TF_'
 alias hcpvars='env | grep -i ".*HCP_"'
 alias govars='env | grep GO'
 
-## get env var vaules already set
+## get env var values already set
 alias vv=get_env_variables
 ## now can just paste the .git url to clone it
 alias -s git='git clone '
@@ -157,8 +152,9 @@ alias kb=kubectl
 alias kbgp='kubectl get pods'
 alias kbgns='kubectl get ns'
 alias kbgs='kubectl get service'
-alias kbcn='kubectl config'
-alias kbc=kubectx
+alias kbd='kubectl describe'
+alias kbc='kubectl config'
+alias kctx=kubectx
 alias kbe=kubens
 alias mk=minikube
 alias mkrs='minikube delete; sleep 3; minikube start ; sleep 5'
@@ -178,7 +174,7 @@ alias gco='git checkout '
 alias gconb='git checkout -t -b'
 alias gcom='gco main'
 alias gun='git reset --soft HEAD~1'
-alias glb='git for-each-ref --format='%(refname:short)' refs/heads/'
+alias glb='git for-each-ref --format="%(refname:short)" refs/heads/'
 alias ogh='open `github_url`'
 ## reset current commit before push
 alias gunc='git reset HEAD~'
@@ -204,12 +200,6 @@ export GUILE_SYSTEM_EXTENSIONS_PATH="/usr/local/lib/guile/3.0/extensions"
 ## Fuzzy finder settings
 export FZF_DEFAULT_OPTS=' --margin=2,0% --border --info=inline --prompt="Search: "'
 
-### Only print neofetch once
-#### the || true makes sure shell does not open with an error
-## use this to completly clear a bucket you want to use terraform destroy on
-alias nterm='open -a iTerm .'
-alias update='brew update && brew outdated'
-
 ## open new chrome browser with incognito
 alias newchr='open -na "Google Chrome" --args --incognito "https://s.f/myapps"'
 alias hcchr='open -n -a "Google Chrome" --args --profile-directory="Profile 1"'
@@ -221,11 +211,13 @@ export INSTRUQT_TELEMETRY=false
 export INSTRUQT_REPORT_CRASHES=false
 
 ## docker
+# See https://docs.docker.com/desktop/setup/install/mac-permission-requirements/#installing-symlinks
+export DOCKER_HOST=unix:///$HOME/.docker/run/docker.sock
 alias dck=docker
 alias dckps='docker ps -aq'
 alias dckrm='docker rm -f $(docker ps -aq)'
 
-## simple scrpipt to convert base64 encoded into byte string
+## simple script to convert base64 encoded into byte string
 function b642str () {
 python << EOPYTHON
 import base64
@@ -264,14 +256,15 @@ alias dmtcon='doormat aws console --role arn:aws:iam::166839932314:role/aws_ken.
 ## vault aliases
 # used for locally compiled vault version
 alias nvlt=/Users/mrken/Documents/dev/github/hashicorp/vault/bin/vault
-alias vaulte=/Users/mrken/Documents/dev/github/hashicorp/vault-enterprise/bin/vault
 alias v=vault
+alias ve=/Users/mrken/Documents/dev/github/hashicorp/vault-enterprise/bin/vault
 alias vr='vault read'
 alias vw='vault write'
 alias vl='vault list'
 alias vs='vault status'
-alias vdev='vault server -dev -dev-root-token-id root'
-alias vedev='vaulte server -dev -dev-root-token-id root'
+alias vdev='v server -dev -dev-root-token-id root'
+alias vedev='ve server -dev -dev-root-token-id root'
+alias psv='ps | grep "vault server"'
 
 # creates alias for running justfile commands in the working directory
 alias .j='just --justfile ./Justfile --working-directory .'
