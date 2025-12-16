@@ -19,7 +19,7 @@ PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash:/opt/home
 
 function source_if_exists (){[ -f "$1" ] && source "$1"}
 
-plugins=(git fzf terraform alias-tips)
+plugins=(alias-tips aws dirpersist docker git fzf kubectl minikube terraform vault)
 
 source_if_exists $ZSH/oh-my-zsh.sh
 # source_if_exists $DOTFILES/.custom_prompt
@@ -27,14 +27,15 @@ source_if_exists $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.
 source_if_exists ~/.fzf.zsh
 
 ## any line that starts with a " " is not saved to history
-## use this to deal with secrets
-## also ignores duplicates
+## use this to deal with secrets, also ignores duplicates
 HISTCONTROL=ignoreboth
 HIST_STAMPS="mm/dd/yyyy"
 export HISTSIZE=50000
 export SAVEHIST=10000
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_NO_STORE
+
+DIRSTACKSIZE=1000
 
 ### Only print neofetch once
 #### the || true makes sure shell does not open with an error
@@ -62,14 +63,13 @@ chpwd() {emulate -L zsh; ls -la; set_git_branch_env_var}
 # utility aliases
 alias ls='ls -laG'
 alias cdp='$(sed "s/[ls ]*/cd /" <<<$history[$((HISTCMD-1))])'
-alias rm='echo "please use trash instead to delete"'
 alias ppath='echo $PATH | tr ":" "\n" | sort'
 alias iforgot='cat $DOTFILES/.iforgot'
 alias daily-status-template='cat $DOTFILES/daily_status.txt | pbcopy'
 alias cppwd='pwd | pbcopy'
 alias pspwd='cd $(pbpaste)'
 # Copy output of last command to clipboard
-alias lcc="fc -e -|pbcopy"
+alias cplc="fc -ln -1 | pbcopy"
 # usage whoport :3000, use pid to kill process
 alias whoport="lsof -P -i "
 alias killport=find_and_kill
@@ -92,17 +92,11 @@ alias vedit='view_edit_tutorial'
 ## aws cli aliases and env variables
 ## awsho updated from https://medium.com/circuitpeople/aws-cli-with-jq-and-bash-9d54e2eabaf1
 alias awsho='{ aws sts get-caller-identity & aws iam list-account-aliases; } | jq -s ".|add"'
+AWS_DEFAULT_REGION=us-east-1
 
 # alias clearuser=`aws iam delete-access-key --access-key-id $AWS_ACCESS_KEY_ID --user-name vault-test-user`
 
-## list specific env variables
-## should be replaced by vars and get_env_variables below
-alias awsvars='env|grep -i ".*AWS"'
-alias vaultvars='env | grep -i ".*VAULT_"'
-alias tfvars='env | grep TF_'
-alias hcpvars='env | grep -i ".*HCP_"'
-alias govars='env | grep GO'
-
+# list specific env variables
 ## get env var values already set
 alias vv=get_env_variables
 ## now can just paste the .git url to clone it
@@ -110,10 +104,12 @@ alias -s git='git clone '
 
 ## global alias
 alias -g PJQ='| jq'
-alias -g OURL='-output-curl-string'
+alias -g PCP='| pbcopy'
+alias -g PG='| grep'
+alias -g OCS='-output-curl-string'
+
 
 # edit and source this file
-alias szsh='echo "use ezsh instead"' 
 alias ezsh='exec zsh' # restarts the shell
 alias czsh='code $DOTFILES'
 
@@ -147,18 +143,14 @@ export TF_PLUGIN_CACHE_DIR=/Users/mrken/.terraform.d/plugin_cache
 export TF_CLI_CONFIG_FILE=~/.terraformrc
 
 ## kubernetes settings and aliasses
-source <(kubectl completion zsh)
-alias kb=kubectl
-alias kbgp='kubectl get pods'
-alias kbgns='kubectl get ns'
-alias kbgs='kubectl get service'
-alias kbd='kubectl describe'
-alias kbc='kubectl config'
+## connect to vault-0 pod on local minikube cluster
+alias kcev='kubectl exec --stdin=true --tty=true vault-0 -- /bin/sh'
 alias kctx=kubectx
-alias kbe=kubens
+alias kb=kubens
 alias mk=minikube
-alias mkrs='minikube delete; sleep 3; minikube start ; sleep 5'
-alias kbev='kubectl exec --stdin=true --tty=true vault-0 -- /bin/sh'
+alias mks='minikube start'
+alias mknuke='minikube delete --all --purge'
+alias mkrs='mknuke; sleep 3; minikube start ; sleep 5'
 
 ## AWS Nuke
 alias nifo='/Users/mrken/Documents/dev/github/aws-nuke/dist/aws-nuke'
@@ -170,14 +162,13 @@ export SKEW_CONFIG=~/.skew/skew.yaml
 ### git stuff
 alias rmgit='trash -rf .git'
 alias cgig='create_git_ignore'
-alias gco='git checkout '
-alias gconb='git checkout -t -b'
+alias gconb='gco -t -b'
 alias gcom='gco main'
+## reset current commit before push
 alias gun='git reset --soft HEAD~1'
 alias glb='git for-each-ref --format="%(refname:short)" refs/heads/'
-alias ogh='open `github_url`'
-## reset current commit before push
-alias gunc='git reset HEAD~'
+alias ogh='open `create_github_url`'
+
 ## prepend env variables to git command for debugging
 alias gitt='env GIT_TRACE=1 GIT_CURL_VERBOSE=1 git'
 
@@ -214,9 +205,10 @@ export INSTRUQT_REPORT_CRASHES=false
 # See https://docs.docker.com/desktop/setup/install/mac-permission-requirements/#installing-symlinks
 export DOCKER_HOST=unix:///$HOME/.docker/run/docker.sock
 alias dck=docker
-alias dckps='docker ps -aq'
-alias dckrm='docker rm -f $(docker ps -aq)'
-
+# alias dckps='docker ps -aq'
+# alias dckrm='docker rm -f $(docker ps -aq)'
+# alias dckc='docker container'
+# alias 
 ## simple script to convert base64 encoded into byte string
 function b642str () {
 python << EOPYTHON
@@ -258,6 +250,8 @@ alias dmtcon='doormat aws console --role arn:aws:iam::166839932314:role/aws_ken.
 alias nvlt=/Users/mrken/Documents/dev/github/hashicorp/vault/bin/vault
 alias v=vault
 alias ve=/Users/mrken/Documents/dev/github/hashicorp/vault-enterprise/bin/vault
+alias val='vault auth list'
+alias vsl='vault secrets list'
 alias vr='vault read'
 alias vw='vault write'
 alias vl='vault list'
@@ -272,3 +266,6 @@ alias .j='just --justfile ./Justfile --working-directory .'
 ## for fun
 alias hollywood='docker run --rm -it bcbcarl/hollywood'
 
+## Ur a dummy alias
+alias szsh='echo "use ezsh instead"' 
+alias rm='echo "please use trash to delete"'

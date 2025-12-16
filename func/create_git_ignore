@@ -25,7 +25,9 @@ junk/**
 .terraform/**
 **/.terraform/**
 .terraform.tfstate.lock.info
+**/.terraform.tfstate.lock.info
 tf.plan
+tfplan
 crash.log
 crash.*.log
 
