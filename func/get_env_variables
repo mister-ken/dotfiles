@@ -3,10 +3,11 @@ function get_env_variables () {
     env_var_identifier=$(echo "$1" | cut -d "." -f 1)
     # echo $env_var_identifier
     if [ -z "$env_var_identifier" ]
-    then # show values for GO, AWS, VAULT, Terraform and HCP
+    then # default - show values for GO, AWS, VAULT, Terraform and HCP
         typeset | grep --color=always -E ".*(GO|.*AWS|.*VAULT_|KUBE_|TF_|.*HCP_)[^=]*" | sort
     else
         # match the env var name regardless of upper/lower
-        typeset | grep --color=always -i ".*${env_var_identifier}[^=]*" | sort
+      #   typeset | grep --color=always -i ".*${env_var_identifier}[^=]*" | sort
+        typeset | grep --color=always -i "^.*${env_var_identifier}[^//]*=[^=]*$" | sort
     fi
 }
