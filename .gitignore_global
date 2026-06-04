@@ -9,10 +9,13 @@ pc
 *.plan
 public/**
 themes/**
-**.DS_Store
+**/.DS_Store
+.DS_Store
 **.git
 logs/**
 junk/**
+.agents/**
+.claude/**
 
 ## terraform files
 *.tfstate

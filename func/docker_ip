@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# given container name in $@ - this will return the IP address of the container
+docker-ip() {      
+  docker inspect "$@" | jq -r ".[0].NetworkSettings.Networks.bridge.IPAddress"
+}

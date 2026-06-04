@@ -17,6 +17,8 @@ typeset -U PATH path
 ## see path_helper in /etc/zprofile for how MacOSX sets PATH
 PATH="/opt/homebrew/opt/libpq/bin:$PATH:$GOPATH:/opt/homebrew/bin/bash:/opt/homebrew/share/google-cloud-sdk/bin"
 
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
 function source_if_exists (){[ -f "$1" ] && source "$1"}
 
 plugins=(alias-tips aws dirpersist docker git fzf kubectl minikube terraform vault)
@@ -149,8 +151,8 @@ alias kctx=kubectx
 alias kb=kubens
 alias mk=minikube
 alias mks='minikube start'
-alias mknuke='minikube delete --all --purge'
-alias mkrs='mknuke; sleep 3; minikube start ; sleep 5'
+alias nukemk='minikube delete --all --purge'
+alias mkrs='nukemk; sleep 3; minikube start ; sleep 5'
 
 ## AWS Nuke
 alias nifo='/Users/mrken/Documents/dev/github/aws-nuke/dist/aws-nuke'
@@ -206,8 +208,8 @@ export INSTRUQT_REPORT_CRASHES=false
 export DOCKER_HOST=unix:///$HOME/.docker/run/docker.sock
 alias dck=docker
 # alias dckps='docker ps -aq'
-# alias dckrm='docker rm -f $(docker ps -aq)'
-# alias dckc='docker container'
+alias dckrm='docker rm -f $(docker ps -aq)'
+
 # alias 
 ## simple script to convert base64 encoded into byte string
 function b642str () {
