@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-## use this to completly clear a bucket you want to use terraform destroy on
+## use this to completely clear a bucket you want to use terraform destroy on
 function clear_bucket () {
 python <<- EOPYTHON
 #!/usr/bin/env python

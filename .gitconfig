@@ -12,3 +12,6 @@
 	status = always
 [pager]
 	log = false
+[safe]
+	directory = /Users/mrken/Documents/dev/github/mister-ken/vault-examples/vault-sdk/k8s-auth/actions-runner/_work/vault-examples/vault-examples
+	directory = /Users/mrken/Documents/dev/github/mister-ken/github-action-test/actions-runner/_work/github-action-test/github-action-test
